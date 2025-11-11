@@ -34,12 +34,22 @@ const BusinessDnaStep: React.FC<BusinessDnaStepProps> = ({ onDnaGenerated }) => 
       const generatedDna = await generateBusinessDna(url);
       setDna(generatedDna);
     } catch (err) {
-      setError('Failed to analyze the website. Please try again.');
+      setError('Failed to analyze the website. Please check the URL or try again.');
       console.error(err);
     } finally {
       setIsLoading(false);
     }
   };
+
+  if (isLoading) {
+    return (
+       <div className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm text-center max-w-2xl mx-auto min-h-[300px] flex flex-col justify-center items-center">
+        <Loader className="h-10 w-10 text-indigo-600" />
+        <h2 className="text-2xl font-bold text-gray-800 mt-4">Generating your Business DNA</h2>
+        <p className="mt-2 text-gray-600">Our AI is analyzing your brand, generating a logo, and creating imagery. This might take a minute...</p>
+      </div>
+    );
+  }
 
   if (dna) {
     return (
@@ -78,8 +88,8 @@ const BusinessDnaStep: React.FC<BusinessDnaStepProps> = ({ onDnaGenerated }) => 
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Detected Imagery</label>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">AI-Generated Imagery</label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
               {dna.images.map((imgSrc, index) => (
                 <img key={index} src={imgSrc} alt={`Website image ${index+1}`} className="rounded-lg object-cover aspect-square" />
               ))}
