@@ -6,6 +6,7 @@ import CampaignIdeationStep from './components/CampaignIdeationStep';
 import CreativeGenerationStep from './components/CreativeGenerationStep';
 import Header from './components/Header';
 import StepWizard from './components/StepWizard';
+import HelpModal from './components/HelpModal';
 
 export enum AppStep {
   DNA_INPUT,
@@ -17,6 +18,7 @@ const App: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<AppStep>(AppStep.DNA_INPUT);
   const [businessDNA, setBusinessDNA] = useState<BusinessDNA | null>(null);
   const [selectedCampaign, setSelectedCampaign] = useState<CampaignIdea | null>(null);
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState<boolean>(false);
 
   const handleDnaGenerated = useCallback((dna: BusinessDNA) => {
     setBusinessDNA(dna);
@@ -51,13 +53,14 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans text-gray-900">
-      <Header />
+      <Header onHelpClick={() => setIsHelpModalOpen(true)} />
       <main className="container mx-auto px-4 py-8 max-w-7xl">
         <StepWizard currentStep={currentStep} />
         <div className="mt-8">
           {renderStep()}
         </div>
       </main>
+      {isHelpModalOpen && <HelpModal onClose={() => setIsHelpModalOpen(false)} />}
     </div>
   );
 };
